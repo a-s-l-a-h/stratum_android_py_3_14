@@ -10,6 +10,7 @@
 .DS_Store
 /build
 /captures
+/.vscode
 .externalNativeBuild
 .cxx
 local.properties
@@ -19,6 +20,7 @@ fullcode/*
 /typings
 /typings/
 typings/*
+*.pyi
 # Gradle
 .gradle/
 **/build/
