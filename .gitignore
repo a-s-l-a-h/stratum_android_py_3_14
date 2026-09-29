@@ -91,3 +91,8 @@ python-prebuilts/
 *.tar.gz
 *.tar.xz
 *.zip
+
+
+# 2. BUT do NOT ignore the README.md files inside them!
+!python-prebuilts/README.md
+!python*-prebuilt/README.md
