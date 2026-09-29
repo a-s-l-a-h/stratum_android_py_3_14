@@ -1,0 +1,93 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+/fullcode
+/fullcode/
+fullcode/*
+# Gradle
+.gradle/
+**/build/
+
+# Android Studio
+.idea/
+*.iml
+
+# Local configuration
+local.properties
+
+
+# ==============================================================================
+# Python Prebuilts & Downloaded Archives (Do NOT commit heavy binaries)
+# ==============================================================================
+python-prebuilts/
+**/prefix/
+*.tar
+*.tar.gz
+*.tar.xz
+*.zip
+
+# ==============================================================================
+# Android & Gradle Build Artifacts
+# ==============================================================================
+.gradle/
+build/
+*/build/
+local.properties
+
+# C/C++ CMake Build outputs
+.cxx/
+*/.cxx/
+
+# Final built packages
+*.apk
+*.aab
+
+# ==============================================================================
+# IDE & Tooling (Android Studio / IntelliJ / Kotlin)
+# ==============================================================================
+.idea/
+*.iml
+.kotlin/
+.navigation/
+
+# ==============================================================================
+# Python Bytecode Artifacts
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==============================================================================
+# OS Generated Files
+# ==============================================================================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ==============================================================================
+# Temporary Notes / Scratchpads
+# ==============================================================================
+hi.txt
+note.txt
+fullcode/
+# Ignores python-prebuilts, python-3.14.7-prebuilt, python-3.15-prebuilt, etc.
+python*-prebuilt/
+python-prebuilts/
+**/prefix/
+*.tar
+*.tar.gz
+*.tar.xz
+*.zip
