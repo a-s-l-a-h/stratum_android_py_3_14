@@ -15,7 +15,6 @@ from stratum.android.widget.ScrollView import ScrollView
 from stratum.java.lang.String import String as JString
 from stratum.java.lang.Integer import Integer
 from stratum.java.util.Arrays import Arrays
-
 # Safe Import of Android System Info
 try:
     from stratum.android.os.Build import Build
@@ -269,10 +268,10 @@ def onCreate():
             return
 
         report_text = (
-            "=== DEVICE HARDWARE SPECS ===\n"
-            + spec_summary + "\n\n"
-            "=== STRATUM BENCHMARK RESULTS ===\n"
-            + "\n".join(log_lines)
+                "=== DEVICE HARDWARE SPECS ===\n"
+                + spec_summary + "\n\n"
+                                 "=== STRATUM BENCHMARK RESULTS ===\n"
+                + "\n".join(log_lines)
         )
 
         copied = False
