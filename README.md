@@ -1,3 +1,15 @@
+## 🛠️ Quick Start
+
+> **Note:** A complete pre-bundled workspace with all prebuilts included is available on the [v0.3 Release page](https://github.com/a-s-l-a-h/stratum_android_py_3_14/releases/tag/v0.3-tag).
+
+
+
+### 1. Setup Python Prebuilts
+Before building, you must download the official Android Python embeddable packages and place the prefix folders inside `python-prebuilts/`.
+
+👉 Follow the step-by-step instructions in `python-prebuilts/README.md`.
+
+
 
 # stratum_android_py_3_14
 
