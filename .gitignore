@@ -16,6 +16,9 @@ local.properties
 /fullcode
 /fullcode/
 fullcode/*
+/typings
+/typings/
+typings/*
 # Gradle
 .gradle/
 **/build/
