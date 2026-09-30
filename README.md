@@ -15,6 +15,19 @@ Before building, you must download the official Android Python embeddable packag
 
 An embedded CPython 3.14 native Android application powered by the **Stratum**  bridge. It directly embeds the official Python C-API to run Python logic and benchmark raw JNI performance on Android.
 
+<p align="center">
+  <video src="https://github.com/user-attachments/assets/3384a2ff-e620-48a3-a091-89afdd81bce3" width="320" controls></video>
+</p>
+
+--- 
+
+> **This demo project is based on [Stratum](https://github.com/a-s-l-a-h/stratum).**
+
+
+
+
+
+
 ---
 
 ## 🚀 Features
