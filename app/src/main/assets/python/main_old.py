@@ -15,8 +15,7 @@ from stratum.android.widget.ScrollView import ScrollView
 from stratum.java.lang.String import String as JString
 from stratum.java.lang.Integer import Integer
 from stratum.java.util.Arrays import Arrays
-
-# Safe Import of Android System Info (Hardware only, no personal identifiers)
+# Safe Import of Android System Info
 try:
     from stratum.android.os.Build import Build
     from stratum.android.os.Build_VERSION import Build_VERSION
@@ -34,7 +33,7 @@ except Exception:
 
 
 # ---------------------------------------------------------------------------
-# Device Spec Collector (Privacy-Safe: Hardware / OS specs only)
+# Device Spec Collector
 # ---------------------------------------------------------------------------
 
 def get_hardware_specs():
@@ -73,9 +72,8 @@ def get_hardware_specs():
 # ---------------------------------------------------------------------------
 
 def test_static_call():
-    """Tests raw slot-table dispatch speed calling Java static methods."""
     iters = 60_000
-    Integer.compare(1, 2)  # warm-up slot
+    Integer.compare(1, 2)
 
     t0 = time.perf_counter_ns()
     for i in range(iters):
@@ -88,10 +86,9 @@ def test_static_call():
 
 
 def test_instance_call():
-    """Tests calling an instance method on a live Java object reference."""
     iters = 60_000
     obj = Integer(12345)
-    obj.intValue()  # warm-up
+    obj.intValue()
 
     t0 = time.perf_counter_ns()
     for _ in range(iters):
@@ -104,7 +101,6 @@ def test_instance_call():
 
 
 def test_string_bridge():
-    """Tests Stratum C++ UTF-8 -> UTF-16 string conversion and object creation."""
     iters = 30_000
     sample = "Stratum_Test_String_123"
 
@@ -120,7 +116,6 @@ def test_string_bridge():
 
 
 def test_int_array():
-    """Tests marshalling Python list -> Java int[] and sorting."""
     iters = 1_500
     base = list(range(150, 0, -1))
 
@@ -136,9 +131,8 @@ def test_int_array():
 
 
 def test_byte_array():
-    """Tests bidirectional byte[] transfer across native bridge."""
     iters = 1_000
-    payload = b"A" * (32 * 1024)  # 32 KB payload
+    payload = b"A" * (32 * 1024)
 
     t0 = time.perf_counter_ns()
     for _ in range(iters):
@@ -154,7 +148,6 @@ def test_byte_array():
 
 
 def test_dict_conversion():
-    """Tests bidirectional Python dict <-> Java HashMap conversion."""
     iters = 1_000
     data = {
         "user": "Android",
@@ -175,7 +168,6 @@ def test_dict_conversion():
 
 
 def test_gc_churn():
-    """Tests creating and freeing 15,000 JNI references to verify JniLocalFrame."""
     iters = 15_000
 
     t0 = time.perf_counter_ns()
@@ -202,7 +194,6 @@ def onCreate():
     root.setBackgroundColor(0xFF141414)
     root.setPadding(24, 32, 24, 24)
 
-    # 1. Header Title
     tv_title = TextView(activity)
     tv_title.setText("STRATUM BRIDGE BENCHMARK")
     tv_title.setTextSize(18.0)
@@ -210,7 +201,6 @@ def onCreate():
     tv_title.setPadding(0, 0, 0, 12)
     root.addView(tv_title)
 
-    # 2. Hardware Specs Card (Top)
     spec_summary = (
         f"• OS / API: {specs['os_release']} (API {specs['api_level']})\n"
         f"• SoC / Board: {specs['hardware']} ({specs['board']})\n"
@@ -226,9 +216,8 @@ def onCreate():
     tv_specs.setPadding(20, 16, 20, 16)
     root.addView(tv_specs)
 
-    # 3. Action Buttons Container
     btn_container = LinearLayout(activity)
-    btn_container.setOrientation(0)  # Horizontal layout
+    btn_container.setOrientation(0)
     btn_container.setPadding(0, 16, 0, 16)
 
     btn_run = Button(activity)
@@ -245,7 +234,6 @@ def onCreate():
     btn_container.addView(btn_copy)
     root.addView(btn_container)
 
-    # 4. Output Console
     tv_console = TextView(activity)
     tv_console.setText("Press 'START BENCHMARK' to test the bridge.\nResults will appear here in real-time.")
     tv_console.setTextSize(11.5)
@@ -257,7 +245,6 @@ def onCreate():
     scroll.addView(tv_console)
     root.addView(scroll)
 
-    # Benchmark State
     tests = [
         ("Static Method Dispatch", test_static_call),
         ("Instance Method Call", test_instance_call),
@@ -272,23 +259,19 @@ def onCreate():
 
     def refresh_screen():
         tv_console.setText("\n".join(log_lines))
-        scroll.fullScroll(130)  # Scroll to bottom
+        scroll.fullScroll(130)
 
-    # --- Copy to Clipboard Handler ---
     def on_copy_click(_=None):
         if not log_lines:
             btn_copy.setText("RUN FIRST!")
-            def reset_copy_txt():
-                btn_copy.setText("COPY REPORT")
-            root.post(reset_copy_txt)
+            root.post(lambda: btn_copy.setText("COPY REPORT"))
             return
 
-        # Prepare formatted text block
         report_text = (
-            "=== DEVICE HARDWARE SPECS ===\n"
-            + spec_summary + "\n\n"
-            "=== STRATUM BENCHMARK RESULTS ===\n"
-            + "\n".join(log_lines)
+                "=== DEVICE HARDWARE SPECS ===\n"
+                + spec_summary + "\n\n"
+                                 "=== STRATUM BENCHMARK RESULTS ===\n"
+                + "\n".join(log_lines)
         )
 
         copied = False
@@ -302,24 +285,16 @@ def onCreate():
             except Exception as e:
                 stratum.log_msg(f"Clipboard copy failed: {e}")
 
-        if copied:
-            btn_copy.setText("COPIED!")
-        else:
-            btn_copy.setText("COPY FAILED")
+        btn_copy.setText("COPIED!" if copied else "COPY FAILED")
 
+        import threading
         def restore_btn():
             time.sleep(1.8)
-            def do_restore():
-                btn_copy.setText("COPY REPORT")
-            root.post(do_restore)
-
-        # Non-blocking reset
-        import threading
+            root.post(lambda: btn_copy.setText("COPY REPORT"))
         threading.Thread(target=restore_btn, daemon=True).start()
 
     btn_copy.setOnClickListener(on_copy_click)
 
-    # --- Benchmark Execution Loop ---
     def start_suite(_=None):
         btn_run.setEnabled(False)
         btn_run.setText("TESTING...")
@@ -337,11 +312,9 @@ def onCreate():
                 step_num = step_idx + 1
                 total = len(tests)
 
-                # 1. Update text showing current test is active
                 log_lines.append(f"[{step_num}/{total}] {name}: RUNNING...")
                 refresh_screen()
 
-                # 2. Yield to Android Choreographer so "RUNNING..." draws to screen before test executes
                 def run_single():
                     gc.collect()
                     try:
@@ -359,9 +332,7 @@ def onCreate():
                     root.post(execute_next_step)
 
                 root.post(run_single)
-
             else:
-                # Finished all tests
                 log_lines.append("=" * 40)
                 log_lines.append("ALL BENCHMARKS FINISHED")
                 refresh_screen()
